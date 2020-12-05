@@ -1,5 +1,5 @@
 import config
-import sys, json, math
+import sys, json, math, os
 from datetime import datetime
 import shelve, requests, tweepy
 
@@ -24,7 +24,7 @@ def main():
         sys.exit()
 
     NE_DEATH_COUNT = 2977
-    with shelve.open('store') as db:
+    with shelve.open(os.path.dirname(os.path.abspath(__file__)) + '/store') as db:
 
         new_deaths_divided = math.floor(covidData['death'] / NE_DEATH_COUNT)
 
@@ -38,7 +38,7 @@ def main():
             print("Tweeting...")
             api.update_status(status=status)
         else:
-            
+
             prev_deaths_divided = db['deaths_divided']
 
             if (new_deaths_divided != prev_deaths_divided):
