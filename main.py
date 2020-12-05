@@ -25,17 +25,24 @@ def main():
 
     NE_DEATH_COUNT = 2977
     with shelve.open('store') as db:
+
         new_deaths_divided = math.floor(covidData['death'] / NE_DEATH_COUNT)
+
         if ('deaths_divided' not in db):
+            # Save fresh data
+            print("Previous COVID tweet data unavailable. Saving new data...")
             db['deaths_divided'] = new_deaths_divided
             db['last_updated_ts'] = datetime.now()
-            print("Previous COVID tweet data unavailable. Saving new data...")
+
             status = str(new_deaths_divided) + " 9/11s worth of Americans have died from COVID-19 since the start of the pandemic."
             print("Tweeting...")
             api.update_status(status=status)
         else:
+            
             prev_deaths_divided = db['deaths_divided']
+
             if (new_deaths_divided != prev_deaths_divided):
+
                 # Tweet out the new thing
                 last_updated = db['last_updated_ts']
                 time_diff = abs(datetime.now() - last_updated)
@@ -45,10 +52,13 @@ def main():
                             "" + str(new_deaths_divided) + " 9/11s worth of Americans have died from COVID-19 since the start of the pandemic." )
                 print("Tweeting...")
                 api.update_status(status=status)
+
                 # Save the new info
                 db['deaths_divided'] = new_deaths_divided
-                db['last_updated_ts'] = datetime.now().
+                db['last_updated_ts'] = datetime.now()
+
             else:
+
                 # If death data has not changed enough, do nothing
                 print("No new data since last run. Doing nothing...")
                 pass
