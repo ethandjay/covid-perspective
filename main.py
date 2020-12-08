@@ -2,6 +2,7 @@ import config
 import sys, json, math, os
 from datetime import datetime
 import shelve, requests, tweepy
+from num2words import num2words
 
 def main():
     
@@ -34,7 +35,7 @@ def main():
             db['deaths_divided'] = new_deaths_divided
             db['last_updated_ts'] = datetime.now()
 
-            status = str(new_deaths_divided) + " 9/11s worth of Americans have died from COVID-19 since the start of the pandemic."
+            status = num2words(new_deaths_divided).capitalize() + " 9/11s worth of Americans have died from COVID-19 since the start of the pandemic."
             print("Tweeting...")
             api.update_status(status=status)
         else:
@@ -49,8 +50,8 @@ def main():
                 time_diff_hours = round(time_diff.total_seconds() / 3600)
                 print("Generating COVID tweet based on saved data...")
                 ne_change = new_deaths_divided - prev_deaths_divided
-                status = (str(ne_change) + " 9/11" + ("s" if ne_change > 1 else "") + " worth of Americans have died from COVID in the last " + str(time_diff_hours) + " hours. "
-                            "" + str(new_deaths_divided) + " 9/11s worth of Americans have died from COVID-19 since the start of the pandemic." )
+                status = (num2words(ne_change).capitalize() + " 9/11" + ("s" if ne_change > 1 else "") + " worth of Americans have died from COVID in the last " + str(time_diff_hours) + " hours. "
+                            "" + num2words(new_deaths_divided).capitalize() + " 9/11s worth of Americans have died from COVID-19 since the start of the pandemic." )
                 print("Tweeting...")
                 api.update_status(status=status)
 
