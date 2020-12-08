@@ -50,7 +50,7 @@ def main():
                 time_diff_hours = round(time_diff.total_seconds() / 3600)
                 print("Generating COVID tweet based on saved data...")
                 ne_change = new_deaths_divided - prev_deaths_divided
-                status = (num2words(ne_change).capitalize() + " 9/11" + ("s" if ne_change > 1 else "") + " worth of Americans have died from COVID in the last " + str(time_diff_hours) + " hours. "
+                status = (num2words(ne_change).capitalize() + " 9/11" + ("s" if ne_change > 1 else "") + " worth of Americans have died from COVID-19 in the last " + str(time_diff_hours) + " hours. "
                             "" + num2words(new_deaths_divided).capitalize() + " 9/11s worth of Americans have died from COVID-19 since the start of the pandemic." )
                 print("Tweeting...")
                 api.update_status(status=status)
